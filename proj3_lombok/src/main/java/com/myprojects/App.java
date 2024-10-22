@@ -1,15 +1,14 @@
 package com.myprojects;
-
+import com.myprojects.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 
 /**
  * Hello world!
  *
  */
-@SpringBootApplication
+
 public class App 
 {
     public static void main( String[] args )
@@ -18,10 +17,11 @@ public class App
         Logger logger = LoggerFactory.getLogger(App.class);
         logger.info("This is a simple slfg4j logging test...");
 
-        SpringApplication.run(App.class, args);
-        Student student = new Student();
+        System.out.println( "Hello World!" );
+        Student student1 = new Student();
 
-        student.setAge(1);
-        System.out.println(student.getAge());
+        student1.setAge(1);
+        System.out.println(student1.getAge());
+
     }
 }
