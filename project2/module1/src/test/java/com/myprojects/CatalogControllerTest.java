@@ -38,9 +38,32 @@ public class CatalogControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/catalog/products-by-category/PRINTERS").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].price").isNumber()
-                .andExpect(jsonPath(("$."))
+                .andExpect(jsonPath("$[0].price").isNumber())
+                .andExpect(jsonPath("$.code", is("P001")))
+                .andExpect(jsonPath("$[0].description").exists())
+                .andExpect(jsonPath("$[0].dummy").doesNotExist());
     }
+
+    @Test
+    public void getProducts() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        Product[] products;
+        Product product1 = new Product("P001", "Printer P001", Category.PRINTERS, 321.37);
+        Product product2 = new Product("C001", "Computer A001", Category.COMPUTERS, 925.4);
+
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders
+                        .get("/catalog/products")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        products = mapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<Product[]>() {});
+
+        assertThat(products, arrayWithSize(4));
+        assertThat(Arrays.stream(products).toList(), hasItem(product1));
+        assertThat(products[0], is(product2));
+        assertThat(products[0].getCode(), is("C001"));
+    }
+
 
 
 }
